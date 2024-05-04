@@ -1,6 +1,13 @@
 import { Wave } from 'react-animated-text';
 
-import { Container, Heading, Loader, RatesList, Section } from 'components';
+import {
+  Container,
+  Filter,
+  Heading,
+  Loader,
+  RatesList,
+  Section,
+} from 'components';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchLastSumbols } from 'reduxState/operations';
@@ -21,7 +28,7 @@ const Rates = () => {
 
   useEffect(() => {
     dicpatch(fetchLastSumbols(baseCurrency));
-  }, [dicpatch]);
+  }, [dicpatch, baseCurrency]);
 
   return (
     <Section>
@@ -31,14 +38,19 @@ const Rates = () => {
           bottom
           title={
             <Wave
-              text={`$ $ $ Current exchange rate for 1 ${'UAH'} $ $ $`}
+              text={`$ $ $ Current exchange rate for 1 ${baseCurrency} $ $ $`}
               effect="fadeOut"
               effectChange={4.0}
             />
           }
         />
         {isLoading && <Loader />}
-        {rates.length > 0 && <RatesList rates={rates} />}
+        {rates.length > 0 && (
+          <>
+            <Filter />
+            <RatesList rates={rates} />
+          </>
+        )}
         {isError && (
           <Heading
             error
